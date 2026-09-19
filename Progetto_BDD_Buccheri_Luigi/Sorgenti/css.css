@@ -1,0 +1,55 @@
+.font-logo {
+    font-family: 'Montserrat';
+}
+.font-qualcosa {
+    font-family: italic;
+}
+.text-petrolio {
+    color: #266774 !important;
+}
+.btn-petrolio {
+    background-color: #266774;
+    color: white;
+}
+.btn-outline-petrolio {
+    color: #266774;
+    border: 2px solid #266774;
+    background-color: transparent;
+}
+.btn-outline-petrolio:hover {
+    background-color: #266774 !important;
+    color: white !important;
+}
+.navbar-nav .nav-link {
+    position: relative;
+    transition: color 0.3s ease;
+}
+.navbar-nav .nav-link::after {
+    content: '';
+    position: absolute;
+    width: 80%; 
+    height: 2px;
+    bottom: 5px; 
+    left: 50%; 
+    transform: translateX(-50%); 
+    background-color: #266774; 
+    opacity: 0; 
+    transition: opacity 0.2s ease-in-out;
+}
+
+.navbar-nav .nav-link:hover::after {
+    opacity: 1; 
+}
+
+.navbar-nav .nav-link:hover {
+    color: #266774 !important;
+}
+
+main > section {
+    background-image: url("src/Sfondo.jpeg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center right;
+    min-height: calc(100vh - 90px); 
+}
+

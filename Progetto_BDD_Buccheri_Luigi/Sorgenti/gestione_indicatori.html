@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+     <head>
+        <meta charset="UTF-8">
+        <title>A.L_admin_creazione_template</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="css.css">
+    </head>
+    <body>
+        <header>
+            <div class="bg-white shadow-sm py-3 position-relative">
+                <div class="container-fluid">
+                <a class="navbar-brand" href="index.html">
+                    <img src="src/logo.png" alt="ESG-BALANCE Logo" height="55">
+                </a>
+            </div>
+            </div>
+        </header>
+        <main class="bg-light d-flex align-items-center" style="min-height: 85vh;">
+            <div class="container-fluid px-5"> 
+                
+                <div class="row w-100 justify-content-evenly align-items-start mt-5"> 
+                    
+                    <div class="col-md-5 mb-4 bg-white shadow p-5" style="border-radius: 20px;">
+                        
+                        <form id="form-voce" action="aggiungi_indicatore.php" method="POST" enctype="multipart/form-data">
+
+                            <div>
+                                <label class="block text-muted small fw-bold uppercase mb-1 ms-2">Pilastro di Riferimento</label>
+                                <select id="tipologia" name="tipologia" class="form-select bg-light border-1 rounded-pill" required>
+                                    <option value="" disabled selected>Seleziona pilastro...</option>
+                                    <option value="ambientali">Ambientale (Environment)</option>
+                                    <option value="sociali">Sociale (Social)</option>
+                                </select>
+                            </div>
+
+                            <label for="nome_indicatore" class="form-label text-muted fw-bold">Nome Indicatore</label>
+                            <input type="text" class="form-control form-control-lg mx-auto bg-light border border-dark rounded-pill mb-3" id="nome_indicatore" name="nome_indicatore" placeholder="es. Emissioni Scope 1" required>
+
+                            <label class="form-label text-muted small fw-bold">Inserire Immagine</label>
+                            <div class="form-group">
+                                <input type="file" class="form-control-file" id="immagine_upload" name="immagine_upload" accept=".jpg" required>
+                            </div>
+
+                             <label for="rilevanza" class="form-label text-muted fw-bold">Rilevanza</label>
+                            <input type="text" class="form-control form-control-lg mx-auto bg-light border border-dark rounded-pill mb-3" id="rilevanza" name="rilevanza" required>
+
+                            <!--Ambientali-->
+                            <div class="ambientali">  
+                                <label for="codice_normativa" class="form-label text-muted fw-bold">Codice Normativa</label>
+                                <input type="text" class="form-control form-control-lg mx-auto bg-light border border-dark rounded-pill mb-3" id="codice_normativa" name="codice_normativa" required>
+                            </div>
+
+                            <!--Sociali-->
+                            <div class="sociali">
+                                <label for="ambito_sociale" class="form-label text-muted fw-bold">Ambito Sociale</label>
+                                <input type="text" class="form-control form-control-lg mx-auto bg-light border border-dark rounded-pill mb-3" id="ambito_sociale" name="ambito_sociale" required>
+
+                                <label for="frequenza_rilevazione" class="form-label text-muted fw-bold">Frequenza Rilevazione</label>
+                                <input type="text" class="form-control form-control-lg mx-auto bg-light border border-dark rounded-pill mb-3" id="frequenza_rilevazione" name="frequenza_rilevazione" required>
+                            </div>
+
+                            <button type="submit" class="btn btn-dark btn-lg w-75 d-block mx-auto rounded-pill fw-bold mb-0">Aggiungi alla Lista</button>
+                        </form>
+                        
+                    </div>
+                    
+                    <div class="col-md-5 mb-4">
+                        <h4 class="fw-bold text-petrolio mb-4 text-center">Lista Indicatori</h4>
+                        <div id="lista-indicatori">
+
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </main>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+        <script>
+            const tipologiaSelect = document.getElementById('tipologia');
+            const bloccoAmbientale = document.querySelector('.ambientali');
+            const bloccoSociale = document.querySelector('.sociali');
+
+            const inputNormativa = document.getElementById('codice_normativa');
+            const inputAmbito = document.getElementById('ambito_sociale');
+            const inputFrequenza = document.getElementById('frequenza_rilevazione');
+
+            function aggiornaForm() {
+                const scelta = tipologiaSelect.value;
+
+                if (scelta === 'ambientali') {
+                    bloccoAmbientale.style.display = 'block';
+                    bloccoSociale.style.display = 'none';
+                    
+                    inputNormativa.disabled = false;
+                    inputAmbito.disabled = true;
+                    inputFrequenza.disabled = true;
+                    
+                } else if (scelta === 'sociali') {
+                    bloccoSociale.style.display = 'block';
+                    bloccoAmbientale.style.display = 'none';
+                    
+                    inputAmbito.disabled = false;
+                    inputFrequenza.disabled = false;
+                    inputNormativa.disabled = true;
+                    
+                } else {
+                    bloccoAmbientale.style.display = 'none';
+                    bloccoSociale.style.display = 'none';
+                    
+                    inputNormativa.disabled = true;
+                    inputAmbito.disabled = true;
+                    inputFrequenza.disabled = true;
+                }
+            }
+
+            aggiornaForm(); 
+
+            tipologiaSelect.addEventListener('change', aggiornaForm);
+
+
+            fetch('get_indicatori.php') 
+            .then(res => res.json())
+            .then(indicatori => {
+                const listaIndicatori = document.getElementById('lista-indicatori');
+                if (indicatori.length === 0) {
+                    listaIndicatori.innerHTML = "<p class='text-muted'>Nessun Indicatore.</p>";
+                    return;
+                }
+                listaIndicatori.innerHTML = indicatori.map(i => {
+
+                let dettagli = "";
+
+                if (i.tipo === "ambientali") {
+                    dettagli = `
+                    <p>Codice Normativa: ${i.codice_normativa}</p>
+                    `;
+                }
+                else if (i.tipo === "sociali") {
+                    dettagli = `
+                    <p class="mb-0">Ambito Sociale: ${i.ambito_sociale}</p>
+                    <p>Frequenza Rilevazione: ${i.frequenza_rilevazione}</p>
+                    `;
+                }
+                return `
+                    <div class="card mb-1 p-2 shadow-sm border-success" style="border-radius: 20px;">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="ms-2">
+                                <strong>${i.nome}</strong>
+                                <p class="mb-0">Tipologia: ${i.tipo}</p>
+                                <p class="mb-0">Rilevanza: ${i.rilevanza}</p>
+                                ${dettagli}
+                            </div>
+                            <button type="button" class="btn btn-danger btn-sm rounded-pill px-3 py-1 text-nowrap" onclick="eliminaIndicatore('${i.nome}')">
+                                Rimuovi Indicatore
+                            </button>
+                        </div>
+                    </div>
+                `;
+                }).join('');
+            })
+            .catch(error => console.error('Errore Lista:', error));
+
+            function eliminaIndicatore(nome) {
+                if (confirm(`Sei sicuro di voler eliminare l'indicatore ${nome}?`)) {
+                    const dati = new FormData();
+                    dati.append('nome', nome);
+
+                    fetch('elimina_indicatore.php', {
+                        method: 'POST',
+                        body: dati
+                    })
+                    .then(res => res.text()) 
+                    .then(risposta => {
+                        alert(risposta); 
+                        location.reload(); 
+                    })
+                    .catch(error => console.error('Errore durante l\'eliminazione:', error));
+                }
+            }
+        </script>
+    </body>
+</html>
+

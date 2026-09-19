@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Area Personale</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="login.css">
+    </head>
+    <body>
+        <header>
+            <div class="bg-white shadow-sm py-3 position-relative">
+                <div class="container-fluid">
+                <!--logo-->
+                <a class="navbar-brand" href="index.html">
+                    <img src="src/logo.png" alt="ESG-BALANCE Logo" height="55">
+                </a>
+            </div>
+            </div>
+        </header>
+        <main class="d-flex align-items-center justify-content-center bg-light">
+            <div id="lista-dati" class="bg-white p-5 shadow rounded-4">
+            </div>
+        </main>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+            <script>
+                fetch('user_data.php')
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.loggato === true) {
+                            const contenitoreDati = document.getElementById('lista-dati');
+                            
+                            contenitoreDati.innerHTML = `
+                            <div>
+                                <p>username: ${data.username}</p>
+                                <p>Email personale: ${data.indirizzo_email}</p>
+                                <p>Codice Fiscale: ${data.cf}</p>
+                                <p>Data nascita: ${data.data}</p>
+                                <p>Data nascita: ${data.luogo}</p>
+                                <p>Ruolo Interno: ${data.ruolo_interno}</p>
+                                <p>Professione: ${data.professione}</p>
+                            </div>
+
+                            `;
+                        }
+                    })
+                    .catch(error => console.error('Errore JS:', error));
+            </script>
+    </body>
+</html>

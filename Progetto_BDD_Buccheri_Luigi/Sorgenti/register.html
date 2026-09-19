@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Register-ESG BALANCE</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="register.css">
+    </head>
+    <body>
+        <header>
+            <div class="bg-white shadow-sm py-3 position-relative">
+                <div class="container-fluid">
+                <!--logo-->
+                <a class="navbar-brand" href="index.html">
+                    <img src="src/logo.png" alt="ESG-BALANCE Logo" height="55">
+                </a>
+            </div>
+            </div>
+        </header>
+        <main class="d-flex align-items-center justify-content-center bg-light">
+            
+            <div class="bg-white p-5 shadow rounded-4 w-100" style="max-width: 1000px;">
+                
+                <h3 class="text-center mb-4 fw-bold">Inserisci i dati</h3>
+                
+                <form action="register.php" method="POST" enctype="multipart/form-data">
+
+                    <div class="row gx-5">
+                        <div class="col-md-6 mb-4">
+                            <div class="mb-3">
+                                <label for="indirizzo-email" class="form-label text-muted small fw-bold">Indirizzo email</label>
+                                <input type="text" class="form-control form-control-lg bg-light border-0 rounded-pill" id="indirizzo-email" name="indirizzo_email" placeholder="es: umbertotocco@gmail.com" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="password" class="form-label text-muted small fw-bold">Password</label>
+                                <input type="password" class="form-control form-control-lg bg-light border-0 rounded-pill" id="password" name="password" placeholder="••••••••••••" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="username" class="form-label text-muted small fw-bold">Username</label>
+                                <input type="text" class="form-control form-control-lg bg-light border-0 rounded-pill" id="username" name="username" placeholder="es: umberto123" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="codice-fiscale" class="form-label text-muted small fw-bold">Codice Fiscale</label>
+                                <input type="text" class="form-control form-control-lg bg-light border-0 rounded-pill" id="codice-fiscale" name="codice_fiscale" placeholder="es: RMPMRT01C30Z134G" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <div class="row">
+                                <div class="col-md-6 mb-4">
+                                    <label for="data-nascita" class="form-label text-muted small fw-bold">Data di nascita</label>
+                                    <input type="date" class="form-control form-control-lg bg-light border-0 rounded-pill" id="data-nascita" name="data_nascita" placeholder="es: 23/12/2004" required>
+                                </div>
+
+                                <div class="col-md-6 mb-4">
+                                    <label for="luogo-nascita" class="form-label text-muted small fw-bold">Luogo di nascita</label>
+                                    <input type="text" class="form-control form-control-lg bg-light border-0 rounded-pill" id="luogo-nascita" name="luogo_nascita" placeholder="es: Bologna" required>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label text-muted small fw-bold">Inserire la propria professione</label>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="professione" id="responsabile_aziendale" value="responsabile_aziendale" checked>
+                                    <label class="form-check-label" for="responsabile_aziendale">
+                                    Responsabile Aziendale
+                                    </label>
+                                </div>
+
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="professione" id="revisore_esg" value="revisore_esg">
+                                    <label class="form-check-label" for="revisore">
+                                    Revisore ESG
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label text-muted small fw-bold">(Solo per Responsabile Aziendale) Inserire Curriculum</label>
+                                <div class="form-group">
+                                    <input type="file" class="form-control-file" id="cv_upload" name="curriculum" accept=".pdf" required>
+                                </div>
+                            </div>   
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-dark btn-lg w-25 d-block mx-auto rounded-pill fw-bold">Registrati</button>
+                    <div class="text-center mt-4">
+                    <p class="text-muted">Hai già un account?<a class="nav-link text-decoration-none text-petrolio" href="login.html">Accedi</a></p>
+                </div>
+                </form>
+            </div>
+
+        </main>
+        <script>
+            const Responsabile = document.getElementById('responsabile_aziendale');
+            const Revisore = document.getElementById('revisore_esg');
+            const cvInput = document.getElementById('cv_upload');
+
+            function aggiornaStatoCurriculum() {
+                if (Revisore.checked) {
+                    cvInput.disabled = true;
+                    cvInput.value = ''; 
+                } else {
+                    cvInput.disabled = false;
+                }
+            }
+
+            Responsabile.addEventListener('change', aggiornaStatoCurriculum);
+            Revisore.addEventListener('change', aggiornaStatoCurriculum);
+
+            aggiornaStatoCurriculum();
+        </script>
+    </body>
+</html>

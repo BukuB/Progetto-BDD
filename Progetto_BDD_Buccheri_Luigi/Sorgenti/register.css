@@ -1,0 +1,12 @@
+main {
+    min-height: calc(100vh - 90px);
+}
+
+main > div {
+    width: 100%; max-width: 500px;
+    border-radius: 24px !important;
+}
+
+.text-petrolio {
+    color: #266774 !important;
+}
